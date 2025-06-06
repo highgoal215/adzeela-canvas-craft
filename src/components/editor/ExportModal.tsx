@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useCanvasStore } from '@/stores/canvasStore';
 import { Crown, Download } from 'lucide-react';
 import { toast } from 'sonner';
-import html2canvas from 'html2canvas';
 
 interface ExportModalProps {
   open: boolean;
@@ -15,7 +14,7 @@ interface ExportModalProps {
 
 export const ExportModal = ({ open, onOpenChange }: ExportModalProps) => {
   const { canvas, userTier } = useCanvasStore();
-  const [format, setFormat] = useState('png');
+  const [format, setFormat] = useState<'png' | 'jpeg'>('png');
   const [quality, setQuality] = useState('medium');
   const [isExporting, setIsExporting] = useState(false);
 
@@ -42,19 +41,19 @@ export const ExportModal = ({ open, onOpenChange }: ExportModalProps) => {
 
       if (quality === 'low') {
         dataURL = canvas.toDataURL({
-          format: format,
+          format: format as 'png' | 'jpeg',
           quality: 0.8,
           multiplier: 0.5
         });
       } else if (quality === 'medium') {
         dataURL = canvas.toDataURL({
-          format: format,
+          format: format as 'png' | 'jpeg',
           quality: 0.9,
           multiplier: 1
         });
       } else {
         dataURL = canvas.toDataURL({
-          format: format,
+          format: format as 'png' | 'jpeg',
           quality: 1,
           multiplier: 2
         });
@@ -123,7 +122,7 @@ export const ExportModal = ({ open, onOpenChange }: ExportModalProps) => {
             <label className="text-sm font-medium text-slate-300 mb-2 block">
               Format
             </label>
-            <Select value={format} onValueChange={setFormat}>
+            <Select value={format} onValueChange={(value: 'png' | 'jpeg') => setFormat(value)}>
               <SelectTrigger className="bg-slate-800 border-slate-600">
                 <SelectValue />
               </SelectTrigger>
