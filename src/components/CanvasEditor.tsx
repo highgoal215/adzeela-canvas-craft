@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sidebar } from './editor/Sidebar';
 import { Canvas } from './editor/Canvas';
 import { TopToolbar } from './editor/TopToolbar';
@@ -9,12 +9,19 @@ import { useCanvasStore } from '@/stores/canvasStore';
 
 export const CanvasEditor = () => {
   const [activePanel, setActivePanel] = useState<'templates' | 'assets' | 'text' | 'shapes'>('templates');
-  const { selectedObject } = useCanvasStore();
+  const { selectedObject, sidebarOpen, theme } = useCanvasStore();
+
+  useEffect(() => {
+    // Initialize theme on component mount
+    document.documentElement.className = theme;
+  }, [theme]);
 
   return (
-    <div className="flex h-screen bg-slate-900 text-white">
-      {/* Left Sidebar */}
-      <Sidebar activePanel={activePanel} onPanelChange={setActivePanel} />
+    <div className="flex h-screen bg-background text-foreground">
+      {/* Left Sidebar - Conditionally rendered */}
+      {sidebarOpen && (
+        <Sidebar activePanel={activePanel} onPanelChange={setActivePanel} />
+      )}
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
@@ -24,14 +31,14 @@ export const CanvasEditor = () => {
         {/* Editor Area */}
         <div className="flex-1 flex">
           {/* Canvas Container */}
-          <div className="flex-1 flex items-center justify-center bg-slate-800 p-8">
+          <div className="flex-1 flex items-center justify-center bg-muted p-8">
             <Canvas />
           </div>
           
           {/* Right Panels */}
-          <div className="w-80 bg-slate-900 border-l border-slate-700 flex flex-col">
+          <div className="w-80 bg-background border-l border-border flex flex-col">
             {/* Layer Panel */}
-            <div className="flex-1 border-b border-slate-700">
+            <div className="flex-1 border-b border-border">
               <LayerPanel />
             </div>
             

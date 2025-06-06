@@ -9,7 +9,10 @@ import {
   ZoomOut,
   Monitor,
   Smartphone,
-  Square
+  Square,
+  Menu,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -18,7 +21,16 @@ import { ExportModal } from './ExportModal';
 import { toast } from 'sonner';
 
 export const TopToolbar = () => {
-  const { setCanvasSize, zoom, setZoom, canvas, userTier } = useCanvasStore();
+  const { 
+    setCanvasSize, 
+    zoom, 
+    setZoom, 
+    canvas, 
+    userTier, 
+    toggleSidebar,
+    theme,
+    toggleTheme 
+  } = useCanvasStore();
   const [showExportModal, setShowExportModal] = React.useState(false);
 
   const presets = [
@@ -55,16 +67,25 @@ export const TopToolbar = () => {
   };
 
   return (
-    <div className="h-16 bg-slate-900 border-b border-slate-700 flex items-center justify-between px-6">
+    <div className="h-16 bg-background border-b border-border flex items-center justify-between px-6">
       {/* Left Section */}
       <div className="flex items-center space-x-4">
-        <h1 className="text-xl font-bold text-white">Adzeela Canvas</h1>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={toggleSidebar}
+          className="text-muted-foreground hover:text-foreground"
+        >
+          <Menu className="w-4 h-4" />
+        </Button>
+        
+        <h1 className="text-xl font-bold text-foreground">Adzeela Canvas</h1>
         
         <div className="flex items-center space-x-2">
-          <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
             <Undo className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
             <Redo className="w-4 h-4" />
           </Button>
         </div>
@@ -73,12 +94,12 @@ export const TopToolbar = () => {
       {/* Center Section */}
       <div className="flex items-center space-x-4">
         <Select onValueChange={handlePresetChange}>
-          <SelectTrigger className="w-48 bg-slate-800 border-slate-600 text-white">
+          <SelectTrigger className="w-48 bg-background border-border text-foreground">
             <SelectValue placeholder="Select preset" />
           </SelectTrigger>
-          <SelectContent className="bg-slate-800 border-slate-600">
+          <SelectContent className="bg-background border-border">
             {presets.map((preset) => (
-              <SelectItem key={preset.label} value={preset.label} className="text-white hover:bg-slate-700">
+              <SelectItem key={preset.label} value={preset.label} className="text-foreground hover:bg-accent">
                 <div className="flex items-center space-x-2">
                   <preset.icon className="w-4 h-4" />
                   <span>{preset.label}</span>
@@ -89,13 +110,13 @@ export const TopToolbar = () => {
         </Select>
 
         <div className="flex items-center space-x-1">
-          <Button variant="ghost" size="sm" onClick={handleZoomOut} className="text-slate-400 hover:text-white">
+          <Button variant="ghost" size="sm" onClick={handleZoomOut} className="text-muted-foreground hover:text-foreground">
             <ZoomOut className="w-4 h-4" />
           </Button>
-          <span className="text-sm text-slate-400 w-12 text-center">
+          <span className="text-sm text-muted-foreground w-12 text-center">
             {Math.round(zoom * 100)}%
           </span>
-          <Button variant="ghost" size="sm" onClick={handleZoomIn} className="text-slate-400 hover:text-white">
+          <Button variant="ghost" size="sm" onClick={handleZoomIn} className="text-muted-foreground hover:text-foreground">
             <ZoomIn className="w-4 h-4" />
           </Button>
         </div>
@@ -103,21 +124,30 @@ export const TopToolbar = () => {
 
       {/* Right Section */}
       <div className="flex items-center space-x-2">
-        <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={toggleTheme}
+          className="text-muted-foreground hover:text-foreground"
+        >
+          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        </Button>
+        
+        <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
           <Save className="w-4 h-4 mr-2" />
           Save
         </Button>
         
         <Button 
           onClick={() => setShowExportModal(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <Download className="w-4 h-4 mr-2" />
           Export
         </Button>
         
         {userTier === 'free' && (
-          <div className="text-xs text-amber-400 ml-2">
+          <div className="text-xs text-amber-500 ml-2">
             Free Plan
           </div>
         )}

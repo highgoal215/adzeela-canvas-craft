@@ -5,7 +5,6 @@ import {
   Type, 
   Shapes, 
   Image, 
-  Download,
   Crown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -41,9 +40,9 @@ export const Sidebar = ({ activePanel, onPanelChange }: SidebarProps) => {
   };
 
   return (
-    <div className="w-80 bg-slate-900 border-r border-slate-700 flex">
+    <div className="w-80 bg-background border-r border-border flex">
       {/* Menu Bar */}
-      <div className="w-16 bg-slate-950 flex flex-col items-center py-4 space-y-2">
+      <div className="w-16 bg-muted flex flex-col items-center py-4 space-y-2">
         {menuItems.map((item) => (
           <Button
             key={item.id}
@@ -51,8 +50,8 @@ export const Sidebar = ({ activePanel, onPanelChange }: SidebarProps) => {
             size="sm"
             className={`w-10 h-10 p-0 ${
               activePanel === item.id 
-                ? 'bg-blue-600 hover:bg-blue-700' 
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                ? 'bg-primary hover:bg-primary/90 text-primary-foreground' 
+                : 'text-muted-foreground hover:text-foreground hover:bg-accent'
             }`}
             onClick={() => onPanelChange(item.id)}
           >
@@ -66,7 +65,7 @@ export const Sidebar = ({ activePanel, onPanelChange }: SidebarProps) => {
         <Button
           variant="outline"
           size="sm"
-          className="w-10 h-10 p-0 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-black"
+          className="w-10 h-10 p-0 border-amber-500 text-amber-500 hover:bg-amber-500 hover:text-amber-foreground"
         >
           <Crown className="w-4 h-4" />
         </Button>
